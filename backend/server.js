@@ -20,22 +20,6 @@ app.use(cors()); // Enable CORS
 // app.use(cors({ origin: "*" }));
 app.use(express.json()); // Parse JSON bodies
 
-// // MongoDB connection
-// mongoose
-//   .connect("mongodb://localhost:27017/yourdbname", {
-//     // useNewUrlParser: true,
-//     // useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("MongoDB connected"))
-//   .catch((err) => console.error("MongoDB connection error:", err));
-// app.use((req, res, next) => {
-//   console.log(`${req.method} ${req.url}`);
-//   next();
-// });
-// app.get("/", (req, res) => {
-//   res.send("Welcome to the API. Please use the following endpoints: /api/auth, /api/users, etc.");
-// });
-
 mongoose
   .connect(process.env.MONGO_URI, {
     // Use the connection string from .env
