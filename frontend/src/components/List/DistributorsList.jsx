@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import RetailerNavbar from "../Navbar/RetailerNavbar";
 
 const DistributorsList = () => {
   const [distributors, setDistributors] = useState([]);
@@ -53,6 +54,8 @@ const DistributorsList = () => {
   };
 
   return (
+    <>
+  <RetailerNavbar/>
     <div className="bg-black min-h-screen"> {/* Set background to black */}
       <div className="container mx-auto p-6">
         <h1 className="text-3xl font-bold text-center text-purple-400 mb-6">Distributors List</h1>
@@ -95,6 +98,7 @@ const DistributorsList = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

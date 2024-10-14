@@ -74,7 +74,7 @@ const DistributorsNavbar = () => {
                 Products <ChevronDownIcon className="w-5 h-5 ml-1" />
               </button>
               {isProductDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
                   <Link
                     to="/addproduct"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -100,7 +100,7 @@ const DistributorsNavbar = () => {
                 Orders <ChevronDownIcon className="w-5 h-5 ml-1" />
               </button>
               {isOrdersDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
                   <Link
                     to="/pendingorders_dist"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -141,10 +141,17 @@ const DistributorsNavbar = () => {
             >
               About
             </Link>
+            <Link
+          to="/complaintandreview"
+              href="#"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out"
+            >
+              Complaint
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 z-50">
             <button
               type="button"
               className="bg-gray-800 p-2 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"

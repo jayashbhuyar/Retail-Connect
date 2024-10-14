@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import RetailerNavbar from "../Navbar/RetailerNavbar";
 
 const LatestProducts = () => {
   const [latestProducts, setLatestProducts] = useState([]);
@@ -25,6 +26,8 @@ const LatestProducts = () => {
   }, []);
 
   return (
+    <>
+   <RetailerNavbar/>
     <div className="bg-gray-900 min-h-screen p-6">
       <h2 className="text-3xl font-bold text-white mb-6 text-center">Latest Products</h2>
       {error && <p className="text-red-500 text-center">{error}</p>}
@@ -59,6 +62,7 @@ const LatestProducts = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

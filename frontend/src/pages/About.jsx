@@ -1,12 +1,33 @@
 // About.jsx
 
 import React from "react";
+// import RetailersNavbar from "../components/Navbar/RetailersNavbar"; // Import RetailersNavbar
+// import AdminNavbar from "../components/Navbar/AdminNavbar"; // Import AdminNavbar
 import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
+import RetailerNavbar from "../components/Navbar/RetailerNavbar";
+import AdminNav from "../components/Navbar/AdminNav";
 
 const About = () => {
+  const userData = JSON.parse(localStorage.getItem("userdata"));
+  const userRole = userData?.role; // Fetch the user's role from local storage
+
+  // Determine which navbar to render based on user role
+  const renderNavbar = () => {
+    switch (userRole) {
+      case "retailer":
+        return <RetailerNavbar />;
+      case "distributor":
+        return <DistributorsNavbar />;
+      case "admin":
+        return <AdminNav />;
+      default:
+        return null; // Return nothing if no role matches
+    }
+  };
+
   return (
     <>
-      <DistributorsNavbar />
+      {renderNavbar()} {/* Render the appropriate navbar */}
 
       <div className="bg-gray-900 text-white">
         <div className="container mx-auto p-6">

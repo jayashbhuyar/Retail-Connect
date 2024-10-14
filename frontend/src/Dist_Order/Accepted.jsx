@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
 
 const Accepted = () => {
   const [acceptedOrders, setAcceptedOrders] = useState([]);
@@ -64,6 +65,8 @@ const Accepted = () => {
   }
 
   return (
+    <>
+   <DistributorsNavbar/>
     <div className="bg-gray-900 min-h-screen p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"> {/* Updated for smaller cards */}
         {acceptedOrders.map((order) => (
@@ -121,6 +124,7 @@ const Accepted = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

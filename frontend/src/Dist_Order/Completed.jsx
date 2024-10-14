@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
 
 const Completed = () => {
   const [completedOrders, setCompletedOrders] = useState([]);
@@ -36,6 +37,8 @@ const Completed = () => {
   }
 
   return (
+    <>
+    <DistributorsNavbar/>
     <div className="bg-gray-900 min-h-screen p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"> {/* Updated to allow 4 cards in a row */}
         {completedOrders.map((order) => (
@@ -61,6 +64,7 @@ const Completed = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

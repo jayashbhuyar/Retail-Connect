@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+// import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
+import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
 
 const Pending = () => {
   const [orders, setOrders] = useState([]);
@@ -102,6 +104,8 @@ const Pending = () => {
   };
 
   return (
+    <>
+   <DistributorsNavbar/>
     <div className="bg-black min-h-screen"> {/* Changed background to black */}
       <div className="container mx-auto p-6 bg-gray-800">
         <h1 className="text-3xl font-bold text-purple-400 mb-6 text-center">Pending Orders</h1>
@@ -203,6 +207,7 @@ const Pending = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

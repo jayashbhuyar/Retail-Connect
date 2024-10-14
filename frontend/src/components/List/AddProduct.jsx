@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import DistributorsNavbar from "../Navbar/DistributorsNavbar";
+import { ChevronDown, Package, DollarSign, Truck, Image, Upload } from "lucide-react";
 
 const AddProduct = () => {
   const [imageUrl, setImageUrl] = useState("");
@@ -7,6 +9,7 @@ const AddProduct = () => {
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState(0);
+  const [stock, setStock] = useState(0);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -41,6 +44,7 @@ const AddProduct = () => {
       distributorEmail,
       quantity,
       price,
+      stock,
     };
 
     try {
@@ -62,6 +66,7 @@ const AddProduct = () => {
         setDescription("");
         setQuantity(0);
         setPrice(0);
+        setStock(0);
       } else {
         setError(data.error);
       }
@@ -71,146 +76,196 @@ const AddProduct = () => {
   };
 
   return (
-    <div
-      className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('https://i.pinimg.com/originals/61/1b/a3/611ba37913b7908524eceda306c65d68.jpg')",
-      }}
-    >
-      <div className="bg-white bg-opacity-80 dark:bg-gray-900 p-5 rounded-lg shadow-lg w-full max-w-lg transition duration-300 transform hover:scale-105">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white">
-          Add Your Product
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Image URL:
-            </label>
-            <input
-              type="text"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              required
-              placeholder="Enter image URL"
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600 focus:outline-none transition duration-200 shadow-sm hover:shadow-md"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
+      <DistributorsNavbar />
+      <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto bg-gray-800 rounded-xl shadow-2xl overflow-hidden transform transition-all hover:scale-105">
+          <div className="md:flex">
+            <div className="md:flex-shrink-0 bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center p-8">
+              <Image className="h-32 w-32 text-white animate-pulse" />
+            </div>
+            <div className="p-8 w-full">
+              <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 mb-6">
+                Add Your Product
+              </h2>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-300">
+                      Image URL
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm">
+                      <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-600 bg-gray-700 text-gray-400 sm:text-sm">
+                        <Upload className="h-5 w-5" />
+                      </span>
+                      <input
+                        type="text"
+                        value={imageUrl}
+                        onChange={(e) => setImageUrl(e.target.value)}
+                        required
+                        placeholder="Enter image URL"
+                        className="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-r-md bg-gray-700 border-gray-600 text-gray-100 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Product Type
+                    </label>
+                    <div className="mt-1 relative">
+                      <select
+                        value={productType}
+                        onChange={(e) => setProductType(e.target.value)}
+                        required
+                        className="bg-gray-700 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-gray-100"
+                      >
+                        <option value="">Select product type</option>
+                        {productTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {type}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                        <ChevronDown className="h-4 w-4" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Product Name
+                    </label>
+                    <input
+                      type="text"
+                      value={productName}
+                      onChange={(e) => setProductName(e.target.value)}
+                      required
+                      placeholder="Enter product name"
+                      className="mt-1 bg-gray-700 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-600 rounded-md text-gray-100"
+                    />
+                  </div>
+
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-300">
+                      Description
+                    </label>
+                    <textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      required
+                      placeholder="Enter product description"
+                      rows={3}
+                      className="mt-1 bg-gray-700 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-600 rounded-md text-gray-100"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Quantity
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Package className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="number"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                        required
+                        min="0"
+                        className="bg-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-600 rounded-md text-gray-100"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Price
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <DollarSign className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="number"
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                        required
+                        min="0"
+                        className="bg-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-600 rounded-md text-gray-100"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Stock
+                    </label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Truck className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="number"
+                        value={stock}
+                        onChange={(e) => setStock(e.target.value)}
+                        required
+                        min="0"
+                        className="bg-gray-700 focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 sm:text-sm border-gray-600 rounded-md text-gray-100"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Distributor Name
+                    </label>
+                    <input
+                      type="text"
+                      value={distributorName}
+                      readOnly
+                      className="mt-1 bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-600 rounded-md text-gray-300"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300">
+                      Distributor Email
+                    </label>
+                    <input
+                      type="email"
+                      value={distributorEmail}
+                      readOnly
+                      className="mt-1 bg-gray-600 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-600 rounded-md text-gray-300"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out transform hover:scale-105"
+                  >
+                    Add Product
+                  </button>
+                </div>
+              </form>
+
+              {error && (
+                <p className="mt-4 text-center text-sm text-red-400 bg-red-900 rounded-md p-2">
+                  {error}
+                </p>
+              )}
+              {success && (
+                <p className="mt-4 text-center text-sm text-green-400 bg-green-900 rounded-md p-2">
+                  {success}
+                </p>
+              )}
+            </div>
           </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Product Type:
-            </label>
-            <select
-              value={productType}
-              onChange={(e) => setProductType(e.target.value)}
-              required
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600 focus:outline-none transition duration-200 shadow-sm hover:shadow-md"
-            >
-              <option value="">Select product type</option>
-              {productTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Product Name:
-            </label>
-            <input
-              type="text"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-              required
-              placeholder="Enter product name"
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600 focus:outline-none transition duration-200 shadow-sm hover:shadow-md"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Description:
-            </label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-              placeholder="Enter product description"
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600 focus:outline-none transition duration-200 shadow-sm hover:shadow-md"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Distributor Name:
-            </label>
-            <input
-              type="text"
-              value={distributorName}
-              readOnly
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-200 dark:bg-gray-700"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Distributor Email:
-            </label>
-            <input
-              type="email"
-              value={distributorEmail}
-              readOnly
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-200 dark:bg-gray-700"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Quantity:
-            </label>
-            <input
-              type="number"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              required
-              min="0"
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600 focus:outline-none transition duration-200 shadow-sm hover:shadow-md"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Price:
-            </label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-              min="0"
-              className="w-full mt-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600 focus:outline-none transition duration-200 shadow-sm hover:shadow-md"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white font-bold py-2 rounded-lg shadow-lg hover:from-green-700 hover:to-green-500 transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-300 dark:focus:ring-green-600"
-          >
-            Add Product
-          </button>
-        </form>
-
-        {error && (
-          <p className="mt-4 text-center text-red-500 font-semibold">{error}</p>
-        )}
-        {success && (
-          <p className="mt-4 text-center text-green-500 font-semibold">
-            {success}
-          </p>
-        )}
+        </div>
       </div>
     </div>
   );

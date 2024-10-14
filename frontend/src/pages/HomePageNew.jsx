@@ -2,9 +2,32 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
+import RetailerNavbar from "../components/Navbar/RetailerNavbar";
+import AdminNav from "../components/Navbar/AdminNav";
 
 const HomePageNew = () => {
+
+  const userData = JSON.parse(localStorage.getItem("userdata"));
+  const userRole = userData?.role; // Fetch the user's role from local storage
+
+  // Determine which navbar to render based on user role
+  const renderNavbar = () => {
+    switch (userRole) {
+      // case "retailer":
+      //   return <RetailerNavbar />;
+      // case "distributor":
+      //   return <DistributorsNavbar />;
+      case "admin":
+        return <AdminNav />;
+      default:
+        return null; // Return nothing if no role matches
+    }
+  };
   return (
+    <>
+   
+    {renderNavbar()} {/* Render the appropriate navbar */}
     <div className="bg-gray-900 text-white min-h-screen flex flex-col">
       <header className="bg-gray-800 p-6 flex justify-between items-center shadow-lg">
         <div className="flex items-center">
@@ -91,6 +114,7 @@ const HomePageNew = () => {
         <p className="text-sm">© 2024 RetailConnect. All rights reserved.</p>
       </footer>
     </div>
+    </>
   );
 };
 

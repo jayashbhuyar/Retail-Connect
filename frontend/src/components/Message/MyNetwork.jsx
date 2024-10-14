@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import DistributorsNavbar from "../Navbar/DistributorsNavbar";
 const MyNetwork = () => {
   const [acceptedRequests, setAcceptedRequests] = useState([]);
   const [error, setError] = useState(null);
@@ -59,6 +59,8 @@ const MyNetwork = () => {
   };
 
   return (
+    <>
+   <DistributorsNavbar/>
     <div className="p-6 bg-gray-900 min-h-screen">
       <h2 className="text-3xl font-bold mb-6 text-gray-100">My Network</h2>
       {error && <p className="text-red-400">{error}</p>}
@@ -104,6 +106,7 @@ const MyNetwork = () => {
         <p className="text-gray-400">No accepted network requests found.</p>
       )}
     </div>
+    </>
   );
 };
 

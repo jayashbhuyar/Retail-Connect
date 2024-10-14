@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import DistributorsNavbar from "../Navbar/DistributorsNavbar"
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
@@ -77,6 +78,9 @@ const Requests = () => {
   };
 
   return (
+    <>
+    <DistributorsNavbar/>
+  
     <div className="min-h-screen bg-gray-900 p-4"> {/* Dark background */}
       <h2 className="text-3xl font-bold text-purple-400 mb-4 text-center">Network Requests</h2>
       {error && <p className="text-red-500 text-center">{error}</p>}
@@ -107,6 +111,7 @@ const Requests = () => {
         ))}
       </div>
     </div>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
 
 const Rejected = () => {
   const [rejectedOrders, setRejectedOrders] = useState([]);
@@ -49,6 +50,8 @@ const Rejected = () => {
   };
 
   return (
+    <>
+    <DistributorsNavbar/>
     <div className="bg-black min-h-screen"> {/* Set background to black */}
       <div className="container mx-auto px-4 py-6">
         <h1 className="text-3xl font-bold text-center text-purple-400 my-8">Rejected Orders</h1>
@@ -85,6 +88,7 @@ const Rejected = () => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

@@ -200,7 +200,7 @@ const getAcceptedOrders = async (req, res) => {
     return res.status(400).json({ message: "Distributor email is required." });
   }
 
-  console.log("Fetching accepted orders for:", distributorEmail); // Debug log
+  // console.log("Fetching accepted orders for:", distributorEmail); // Debug log
 
   try {
     const acceptedOrders = await Order.find({
@@ -208,7 +208,7 @@ const getAcceptedOrders = async (req, res) => {
       status: "accepted",
     });
 
-    console.log("Accepted Orders Found:", acceptedOrders); // Debug log
+    // console.log("Accepted Orders Found:", acceptedOrders); // Debug log
 
     res.status(200).json(acceptedOrders);
   } catch (error) {

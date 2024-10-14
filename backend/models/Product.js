@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   distributorEmail: { type: String, required: true }, // Email of the distributor
   quantity: { type: Number, required: true, min: 0 }, // Quantity of the product
   price: { type: Number, required: true, min: 0 }, // Price of the product
+  stock: { type: Number, required: true, min: 1 }, // Price of the product
   description: { type: String, required: true }, // Description of the product
   createdAt: { type: Date, default: Date.now }, // Timestamp for when the product was added
 });

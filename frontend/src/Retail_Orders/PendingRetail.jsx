@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import RetailerNavbar from "../components/Navbar/RetailerNavbar";
 const PendingRetailer = () => {
   const [pendingOrders, setPendingOrders] = useState([]);
   const [error, setError] = useState(null);
@@ -76,6 +76,9 @@ const PendingRetailer = () => {
   }
 
   return (
+    <>
+    <RetailerNavbar/>
+  
     <div className="container mx-auto p-6 bg-gray-800 min-h-screen">
       <h1 className="text-3xl font-bold text-purple-400 mb-6">Pending Orders</h1>
       {error && <p className="text-red-500">{error}</p>}
@@ -129,7 +132,7 @@ const PendingRetailer = () => {
           ))}
         </div>
       )}
-    </div>
+    </div>  </>
   );
 };
 

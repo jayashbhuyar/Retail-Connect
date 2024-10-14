@@ -13,7 +13,7 @@ const Signup = () => {
   const [address, setAddress] = useState(""); // Added address field
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [darkMode, setDarkMode] = useState(false); // State for dark mode
+  const [darkMode, setDarkMode] = useState(true); // State for dark mode
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -150,7 +150,7 @@ const Signup = () => {
               >
                 <option value="retailer">Retailer</option>
                 <option value="distributor">Distributor</option>
-                <option value="admin">Admin</option>
+                {/* <option value="admin">Admin</option> */}
               </select>
             </div>
             {role === "distributor" && (

@@ -77,7 +77,7 @@ const RetailerNavbar = () => {
                 Products <ChevronDownIcon className="w-5 h-5 ml-1" />
               </button>
               {isProductDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
                   <Link
                     to="/latestproduct"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -106,7 +106,7 @@ const RetailerNavbar = () => {
                 Orders <ChevronDownIcon className="w-5 h-5 ml-1" />
               </button>
               {isOrdersDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg">
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
                   <Link
                     to="/pendingretail"
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -147,6 +147,13 @@ const RetailerNavbar = () => {
             >
               About
             </a>
+            <Link
+          to="/complaintandreview"
+              href="#"
+              className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition duration-300 ease-in-out"
+            >
+              Complaint
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -184,7 +191,7 @@ const RetailerNavbar = () => {
                 )}
               </button>
               {isUserMenuOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                   <div className="px-4 py-2 text-sm text-gray-700">
                     {userData
                       ? `${userData.name || "Guest"} ${userData.lastName || ""}`
@@ -331,6 +338,7 @@ const RetailerNavbar = () => {
             >
               About
             </a>
+            
           </div>
         </motion.div>
       )}

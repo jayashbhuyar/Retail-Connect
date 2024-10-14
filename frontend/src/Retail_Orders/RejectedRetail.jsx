@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import RetailerNavbar from "../components/Navbar/RetailerNavbar";
 const RejectedRetail = () => {
   const [rejectedOrders, setRejectedOrders] = useState([]);
   const [error, setError] = useState(null);
@@ -43,6 +43,9 @@ const RejectedRetail = () => {
   }
 
   return (
+    <>
+    <RetailerNavbar/>
+   
     <div className="container mx-auto p-6 bg-gray-900 min-h-screen">
       <h1 className="text-3xl font-bold text-purple-400 mb-6">Rejected Orders</h1>
       {error && <p className="text-red-400">{error}</p>}
@@ -95,6 +98,7 @@ const RejectedRetail = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

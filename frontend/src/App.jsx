@@ -36,6 +36,12 @@ import AcceptedRetail from "./Retail_Orders/AcceptedRetail";
 import RejectedRetail from "./Retail_Orders/RejectedRetail";
 import CompletedRetail from "./Retail_Orders/CompletedRetail";
 import AdminHome from "./components/Admin/AdminHome";
+import AdminNav from "./components/Navbar/AdminNav";
+import AdminRetailerList from "./components/Admin_List/AdminRetailerList";
+import AdminProductList from "./components/Admin_List/AdminProductList";
+import AdminDistributorsList from "./components/Admin_List/AdminDistributorsList";
+import AdminComplaints from "./components/Admin_List/AdminComplaints";
+import ComplaintAndReviewPage from "./pages/ComplaintAndreview";
 const App = () => {
   return (
     <Router>
@@ -71,8 +77,14 @@ const App = () => {
         <Route path="/acceptedretail" element={<AcceptedRetail />} />
         <Route path="/rejectedretail" element={<RejectedRetail />} />
         <Route path="/completedretail" element={<CompletedRetail />} />
-        <Route path="/adminhome" element={<AdminHome/>} />
-
+        <Route path="/adminhome" element={<AdminHome />} />
+        <Route path="/adminnav" element={<AdminNav />} />
+        <Route path="/adminretailerlist" element={<AdminRetailerList />} />
+        <Route path="/adminproductlist" element={<AdminProductList />} />
+        <Route path="/admindistributorslist" element={<AdminDistributorsList />} />
+        <Route path="/admincomplaints" element={<AdminComplaints />} />
+        <Route path="/complaintandreview" element={<ComplaintAndReviewPage />} />
+        
       </Routes>
     </Router>
   );
