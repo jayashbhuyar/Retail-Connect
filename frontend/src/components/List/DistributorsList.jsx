@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import RetailerNavbar from "../Navbar/RetailerNavbar";
+import { MessageCircle, UserPlus, AlertCircle, X } from 'lucide-react';
 
 const DistributorsList = () => {
   const [distributors, setDistributors] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     const fetchDistributors = async () => {
@@ -30,8 +32,8 @@ const DistributorsList = () => {
   }, []);
 
   const handleAddToNetwork = async (distributor) => {
-    setError(null); // Clear previous errors
-    const userEmail = JSON.parse(localStorage.getItem("userdata"))?.email; // Get user email from local storage
+    setError(null);
+    const userEmail = JSON.parse(localStorage.getItem("userdata"))?.email;
   
     try {
       const response = await fetch(`http://localhost:8000/api/network/add`, {
@@ -39,66 +41,90 @@ const DistributorsList = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ distributorEmail: distributor.email, userEmail }), // Send both emails
+        body: JSON.stringify({ distributorEmail: distributor.email, userEmail }),
       });
   
       const data = await response.json();
       if (response.ok) {
-        alert(`You have added ${distributor.name} to your network!`); // Notify user of success
+        showNotification(`${distributor.name} added to your network!`, "success");
       } else {
-        setError(data.error); // Handle error response
+        showNotification(data.error, "error");
       }
     } catch (error) {
-      setError("An error occurred while adding to the network.");
+      showNotification("An error occurred while adding to the network.", "error");
     }
   };
 
+  const showNotification = (message, type) => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
+
   return (
-    <>
-  <RetailerNavbar/>
-    <div className="bg-black min-h-screen"> {/* Set background to black */}
+    <div className="bg-gray-900 min-h-screen text-white">
+      <RetailerNavbar />
       <div className="container mx-auto p-6">
-        <h1 className="text-3xl font-bold text-center text-purple-400 mb-6">Distributors List</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {loading && <p className="text-white text-center">Loading distributors...</p>}
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          {distributors.length === 0 && !loading && <p className="text-white text-center">No distributors found.</p>}
+        <h1 className="text-4xl font-bold text-center text-purple-400 mb-8">Distributors Network</h1>
+        
+        {notification && (
+          <div className={`fixed top-4 right-4 max-w-sm w-full ${
+            notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+          } text-white rounded-lg shadow-lg overflow-hidden`}>
+            <div className="p-4 flex items-center">
+              <AlertCircle className="w-6 h-6 mr-3" />
+              <p>{notification.message}</p>
+              <button onClick={() => setNotification(null)} className="ml-auto">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {loading && <p className="text-center col-span-full">Loading distributors...</p>}
+          {error && <p className="text-red-500 text-center col-span-full">{error}</p>}
+          {distributors.length === 0 && !loading && <p className="text-center col-span-full">No distributors found.</p>}
           {distributors.map((distributor) => (
             <div
               key={distributor._id}
-              className="bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col transition-transform transform hover:scale-105"
+              className="bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-105"
             >
-              <img
-                src={distributor.image}
-                alt={distributor.name}
-                className="h-40 w-full object-cover rounded-md mb-4 border-2 border-gray-200 shadow-md"
-              />
-              <h3 className="text-lg font-bold text-teal-300">{distributor.name}</h3>
-              <p className="text-gray-400">Company Name: {distributor.companyName}</p>
-              <p className="text-gray-400">Email: {distributor.email}</p>
-              <p className="text-gray-400">Phone: {distributor.phone}</p>
-              <p className="text-gray-400">Created At: {new Date(distributor.createdAt).toLocaleDateString()}</p>
-              <div className="mt-auto flex space-x-2">
-                <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition duration-200"
-                  aria-label={`Message ${distributor.name}`}
-                >
-                  Message
-                </button>
-                <button
-                  onClick={() => handleAddToNetwork(distributor)}
-                  className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600 transition duration-200"
-                  aria-label={`Add ${distributor.name} to network`}
-                >
-                  Add to Network
-                </button>
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={distributor.image}
+                  alt={distributor.name}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                />
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-bold text-teal-300 mb-2">{distributor.name}</h3>
+                <p className="text-gray-400 text-sm mb-1">{distributor.companyName}</p>
+                <p className="text-gray-400 text-sm mb-1">{distributor.email}</p>
+                <p className="text-gray-400 text-sm mb-1">{distributor.phone}</p>
+                <p className="text-gray-400 text-sm mb-4">Joined: {new Date(distributor.createdAt).toLocaleDateString()}</p>
+                <div className="flex space-x-2">
+                  <button
+                    className="flex-1 bg-blue-600 text-white px-3 py-2 rounded-full hover:bg-blue-700 transition duration-300 flex items-center justify-center"
+                    aria-label={`Message ${distributor.name}`}
+                  >
+                    <MessageCircle className="w-5 h-5 mr-2" />
+                    Message
+                  </button>
+                  <button
+                    onClick={() => handleAddToNetwork(distributor)}
+                    className="flex-1 bg-teal-500 text-white px-3 py-2 rounded-full hover:bg-teal-600 transition duration-300 flex items-center justify-center"
+                    aria-label={`Add ${distributor.name} to network`}
+                  >
+                    <UserPlus className="w-5 h-5 mr-2" />
+                    Connect
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
     </div>
-    </>
   );
 };
 

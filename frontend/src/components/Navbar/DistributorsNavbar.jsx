@@ -152,13 +152,14 @@ const DistributorsNavbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex items-center space-x-4 z-50">
+            <Link to="/newsfeed">
             <button
               type="button"
               className="bg-gray-800 p-2 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
             >
               <span className="sr-only">View notifications</span>
               <BellIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
+            </button></Link>
 
             <div className="relative">
               <button

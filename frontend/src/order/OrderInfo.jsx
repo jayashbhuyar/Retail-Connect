@@ -207,76 +207,76 @@ const OrderInfo = () => {
 //     alert('Error updating stock');
 //   }
 // };
-const handleOrder = async () => {
-  const userData = JSON.parse(localStorage.getItem("userdata")); // Retrieve all user data from local storage
-  const retailerId = userData?.id; // Get retailer ID
-  const distributorId = product?.distributorId; // Assuming you have this field in your product
-  const missingFields = [];
+// const handleOrder = async () => {
+//   const userData = JSON.parse(localStorage.getItem("userdata")); // Retrieve all user data from local storage
+//   const retailerId = userData?.id; // Get retailer ID
+//   const distributorId = product?.distributorId; // Assuming you have this field in your product
+//   const missingFields = [];
   
-  // Detailed validation checks
-  if (!retailerId) {
-    missingFields.push("Retailer ID");
-  }
-  if (!productId) {
-    missingFields.push("Product ID");
-  }
-  if (quantity <= 0) {
-    missingFields.push("Quantity (must be greater than 0)");
-  }
-  if (!message) {
-    missingFields.push("Message");
-  }
+//   // Detailed validation checks
+//   if (!retailerId) {
+//     missingFields.push("Retailer ID");
+//   }
+//   if (!productId) {
+//     missingFields.push("Product ID");
+//   }
+//   if (quantity <= 0) {
+//     missingFields.push("Quantity (must be greater than 0)");
+//   }
+//   if (!message) {
+//     missingFields.push("Message");
+//   }
 
-  // Alert if there are missing fields
-  if (missingFields.length > 0) {
-    alert(`The following fields are required: ${missingFields.join(", ")}`);
-    return; // Stop execution if validation fails
-  }
+//   // Alert if there are missing fields
+//   if (missingFields.length > 0) {
+//     alert(`The following fields are required: ${missingFields.join(", ")}`);
+//     return; // Stop execution if validation fails
+//   }
 
-  // Create order data object
-  const orderData = {
-    distributorName: distributorInfo.name,
-    distributorEmail: distributorInfo.email,
-    userId: userData.id,
-    img: distributorInfo.img,
-    productName: distributorInfo.productName,
-    userName: userData?.name, // Add retailer's name
-    userEmail: userData?.email, // Add retailer's email
-    userPhone: userData?.phone, // Add retailer's phone
-    shopName: userData?.shopName, // Add retailer's shop name
-    quantity,
-    price: product.price,
-    msg: message,
-    deliveryBefore: null,
-    orderCancelReason: null,
-    retailerAddress: userData?.address, // Add retailer's address
-  };
+//   // Create order data object
+//   const orderData = {
+//     distributorName: distributorInfo.name,
+//     distributorEmail: distributorInfo.email,
+//     userId: userData.id,
+//     img: distributorInfo.img,
+//     productName: distributorInfo.productName,
+//     userName: userData?.name, // Add retailer's name
+//     userEmail: userData?.email, // Add retailer's email
+//     userPhone: userData?.phone, // Add retailer's phone
+//     shopName: userData?.shopName, // Add retailer's shop name
+//     quantity,
+//     price: product.price,
+//     msg: message,
+//     deliveryBefore: null,
+//     orderCancelReason: null,
+//     retailerAddress: userData?.address, // Add retailer's address
+//   };
 
-  try {
-    // Call the backend to place the order
-    const response = await fetch('http://localhost:8000/api/orders/place', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(orderData),
-    });
+//   try {
+//     // Call the backend to place the order
+//     const response = await fetch('http://localhost:8000/api/orders/place', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(orderData),
+//     });
 
-    if (response.ok) {
-      // After placing the order, update the stock in the distributor's product
-      const stockUpdateResult = await updateDistributorStock(distributorEmail1, productId, quantity);
+//     if (response.ok) {
+//       // After placing the order, update the stock in the distributor's product
+//       const stockUpdateResult = await updateDistributorStock(distributorEmail1, productId, quantity);
 
-      if (stockUpdateResult) {
-        alert('Order placed successfully and stock updated');
-      }
-    } else {
-      alert('Failed to place order');
-    }
-  } catch (error) {
-    console.error('Error placing order:', error);
-    alert('Error placing order');
-  }
-};
+//       if (stockUpdateResult) {
+//         alert('Order placed successfully and stock updated');
+//       }
+//     } else {
+//       alert('Failed to place order');
+//     }
+//   } catch (error) {
+//     console.error('Error placing order:', error);
+//     alert('Error placing order');
+//   }
+// };
 
 // Function to update distributor's stock
 // const updateDistributorStock = async (distributorEmail1, productId, quantity) => {
@@ -313,6 +313,81 @@ const handleOrder = async () => {
 //     return false; // Prevent further execution if stock update fails
 //   }
 // };
+
+const handleOrder = async () => {
+  const userData = JSON.parse(localStorage.getItem("userdata")); // Retrieve all user data from local storage
+  const retailerId = userData?.id; // Get retailer ID
+  const distributorId = product?.distributorId; // Assuming you have this field in your product
+  const missingFields = [];
+  
+  // Detailed validation checks
+  if (!retailerId) {
+    missingFields.push("Retailer ID");
+  }
+  if (!productId) {
+    missingFields.push("Product ID");
+  }
+  if (quantity <= 0) {
+    missingFields.push("Quantity (must be greater than 0)");
+  }
+  if (!message) {
+    missingFields.push("Message");
+  }
+
+  // Alert if there are missing fields
+  if (missingFields.length > 0) {
+    alert(`The following fields are required: ${missingFields.join(", ")}`);
+    return; // Stop execution if validation fails
+  }
+
+  // Check if there is sufficient stock before placing the order
+  const stockUpdateResult = await updateDistributorStock(distributorEmail1, productId, quantity);
+
+  if (!stockUpdateResult) {
+    // If stock update fails due to insufficient stock, stop the process
+    return; 
+  }
+
+  // If stock update is successful, create order data object
+  const orderData = {
+    distributorName: distributorInfo.name,
+    distributorEmail: distributorInfo.email,
+    userId: userData.id,
+    img: distributorInfo.img,
+    productName: distributorInfo.productName,
+    userName: userData?.name, // Add retailer's name
+    userEmail: userData?.email, // Add retailer's email
+    userPhone: userData?.phone, // Add retailer's phone
+    shopName: userData?.shopName, // Add retailer's shop name
+    quantity,
+    price: product.price,
+    msg: message,
+    deliveryBefore: null,
+    orderCancelReason: null,
+    retailerAddress: userData?.address, // Add retailer's address
+    productId:productId
+  };
+
+  try {
+    // Call the backend to place the order
+    const response = await fetch('http://localhost:8000/api/orders/place', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (response.ok) {
+      alert('Order placed successfully and stock updated');
+    } else {
+      alert('Failed to place order');
+    }
+  } catch (error) {
+    console.error('Error placing order:', error);
+    alert('Error placing order');
+  }
+};
 
 const updateDistributorStock = async (distributorEmail1, productId, quantity) => {
   try {

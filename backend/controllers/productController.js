@@ -213,3 +213,27 @@ exports.deleteProduct = async (req, res) => {
     res.status(400).json({ error: 'An error occurred while deleting the product.' });
   }
 };
+
+// productsroutes.js or wherever you define your product routes
+exports.updateRejectedStock=async (req, res) => {
+  const { productId } = req.params;
+  const { increment } = req.body; // `increment` will hold the quantity to add back to the stock
+  // const objectId = new ObjectId(productId);
+  // console.log(productId)
+  try {
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Increment the stock
+    product.stock += increment;
+    await product.save();
+
+    res.status(200).json({ message: 'Stock updated successfully', product });
+  } catch (error) {
+    console.error('Error updating stock:', error);
+    res.status(500).json({ message: 'Failed to update stock' });
+  }
+};

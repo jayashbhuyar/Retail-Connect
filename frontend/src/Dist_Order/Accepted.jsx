@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DistributorsNavbar from "../components/Navbar/DistributorsNavbar";
+import { Package, Mail, Phone, Store, Calendar, DollarSign, MessageCircle, MapPin, CheckCircle } from "lucide-react";
 
 const Accepted = () => {
   const [acceptedOrders, setAcceptedOrders] = useState([]);
@@ -9,7 +10,7 @@ const Accepted = () => {
   useEffect(() => {
     const fetchAcceptedOrders = async () => {
       const userData = JSON.parse(localStorage.getItem("userdata"));
-      const distributorEmail = userData?.email; // Use optional chaining to avoid errors if userData is null
+      const distributorEmail = userData?.email;
 
       if (!distributorEmail) {
         setError("Distributor email not found in local storage.");
@@ -26,10 +27,7 @@ const Accepted = () => {
           }
         );
         setAcceptedOrders(response.data);
-        if (response.data && response.data.length > 0) {
-          // Remove this line if you don't have setRejectedOrders defined
-          // setRejectedOrders(response.data); 
-        } else {
+        if (!(response.data && response.data.length > 0)) {
           setError("No Accepted Orders found.");
         }
       } catch (error) {
@@ -38,8 +36,8 @@ const Accepted = () => {
       }
     };
 
-    fetchAcceptedOrders(); // Call the function here
-  }, []); // Ensure the dependency array is cor
+    fetchAcceptedOrders();
+  }, []);
 
   const handleCompleteOrder = async (orderId) => {
     try {
@@ -48,7 +46,6 @@ const Accepted = () => {
       );
       const updatedOrder = response.data;
 
-      // Update state to reflect the updated order
       setAcceptedOrders((prevOrders) =>
         prevOrders.map((order) =>
           order._id === updatedOrder._id ? updatedOrder : order
@@ -60,70 +57,64 @@ const Accepted = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-500 text-center mt-10">{error}</div>;
   }
 
   return (
     <>
-   <DistributorsNavbar/>
-    <div className="bg-gray-900 min-h-screen p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"> {/* Updated for smaller cards */}
-        {acceptedOrders.map((order) => (
-          <div
-            key={order._id}
-            className="bg-gray-800 border border-gray-700 p-3 rounded-lg shadow-lg transition-transform transform hover:scale-100"
-          >
-            <h2 className="text-lg font-bold text-white">{order.userName}</h2>
-            <p className="text-gray-300 text-sm">
-              <strong>Email:</strong> {order.userEmail}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Phone:</strong> {order.userPhone}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Shop Name:</strong> {order.shopName}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Quantity:</strong> {order.quantity}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Price:</strong> ${order.price}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Message:</strong> {order.msg}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Delivery Before:</strong> {order.deliveryBefore || "N/A"}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Order Cancel Reason:</strong>{" "}
-              {order.orderCancelReason || "N/A"}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Retailer Address:</strong> {order.retailerAddress}
-            </p>
-            <img
-              src={order.img}
-              alt={order.productName}
-              className="w-full h-32 object-cover mt-2 rounded-md" // Updated for fixed height and cover fit
-            />
-            <p className="mt-2 text-gray-300 text-sm">
-              <strong>Product Name:</strong> {order.productName}
-            </p>
-            <p className="text-gray-300 text-sm">
-              <strong>Status:</strong> {order.status}
-            </p>
-            <button
-              onClick={() => handleCompleteOrder(order._id)}
-              className="mt-3 bg-green-600 text-white py-1 px-3 rounded hover:bg-green-500 transition"
+      <DistributorsNavbar />
+      <div className="bg-gray-900 min-h-screen p-4">
+        <h1 className="text-3xl font-bold text-white mb-6 text-center">Accepted Orders</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {acceptedOrders.map((order) => (
+            <div
+              key={order._id}
+              className="bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-blue-500 flex flex-col"
             >
-              Mark as Completed
-            </button>
-          </div>
-        ))}
+              <div className="relative h-40">
+                <img
+                  src={order.img}
+                  alt={order.productName}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-0 right-0 bg-green-500 text-white px-2 py-1 m-2 rounded-full text-xs font-semibold">
+                  {order.status}
+                </div>
+              </div>
+              <div className="p-3 flex-grow">
+                <h2 className="text-lg font-bold text-white mb-2 truncate">{order.userName}</h2>
+                <div className="space-y-1 text-xs text-gray-300">
+                  <p className="flex items-center"><Mail className="w-3 h-3 mr-1" /> <span className="truncate">{order.userEmail}</span></p>
+                  <p className="flex items-center"><Phone className="w-3 h-3 mr-1" /> {order.userPhone}</p>
+                  <p className="flex items-center"><Store className="w-3 h-3 mr-1" /> <span className="truncate">{order.shopName}</span></p>
+                  <p className="flex items-center"><Package className="w-3 h-3 mr-1" /> Qty: {order.quantity}</p>
+                  <p className="flex items-center"><DollarSign className="w-3 h-3 mr-1" /> ${order.price}</p>
+                  <p className="flex items-center"><Calendar className="w-3 h-3 mr-1" /> {formatDate(order.deliveryBefore) || "N/A"}</p>
+                  <p className="flex items-center"><MapPin className="w-3 h-3 mr-1" /> <span className="truncate">{order.retailerAddress}</span></p>
+                  <div className="flex items-start">
+                    <MessageCircle className="w-3 h-3 mr-1 mt-0.5 flex-shrink-0" />
+                    <p className="flex-grow line-clamp-2 hover:line-clamp-none">{order.msg}</p>
+                  </div>
+                </div>
+                <p className="mt-2 text-white font-semibold text-sm truncate">{order.productName}</p>
+              </div>
+              <button
+                onClick={() => handleCompleteOrder(order._id)}
+                className="w-full bg-green-600 text-white py-2 px-4 text-sm hover:bg-green-500 transition-colors duration-300 flex items-center justify-center"
+              >
+                <CheckCircle className="w-4 h-4 mr-1" />
+                Mark as Completed
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
     </>
   );
 };

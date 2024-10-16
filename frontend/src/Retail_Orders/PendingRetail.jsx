@@ -28,27 +28,58 @@ const PendingRetailer = () => {
     }
   }, [userEmail]);
 
+  // #####################################################################################
+  // const handleCancelOrder = async (orderId) => {
+  //   const reason = prompt("Please enter the reason for cancellation:");
+  //   if (reason) {
+  //     const message = `Cancelled by Retailer. Reason: ${reason}`;
+  //     try {
+  //       await axios.patch(
+  //         `http://localhost:8000/api/orders/retail/status/${orderId}`,
+  //         {
+  //           status: "cancelled",
+  //           msg: message,
+  //         }
+  //       );
+  //       setPendingOrders(
+  //         pendingOrders.filter((order) => order._id !== orderId)
+  //       );
+  //     } catch (err) {
+  //       console.error(err);
+  //       setError("Failed to cancel the order.");
+  //     }
+  //   }
+  // };
+
   const handleCancelOrder = async (orderId) => {
     const reason = prompt("Please enter the reason for cancellation:");
     if (reason) {
       const message = `Cancelled by Retailer. Reason: ${reason}`;
+  
       try {
-        await axios.patch(
-          `http://localhost:8000/api/orders/retail/status/${orderId}`,
-          {
-            status: "cancelled",
-            msg: message,
-          }
-        );
-        setPendingOrders(
-          pendingOrders.filter((order) => order._id !== orderId)
-        );
+        // Cancel the order and retrieve the updated order details
+        const response = await axios.patch(`http://localhost:8000/api/orders/retail/status/${orderId}`, {
+          status: "cancelled",
+          msg: message,
+        });
+  
+        const { productId, quantity } = response.data; // Extract productId and quantity from the updated order
+  
+        // Update the stock of the product using the productId and quantity
+        await axios.patch(`http://localhost:8000/api/products/update-stock/${productId}`, {
+          increment: quantity, // Increment stock by the order quantity
+        });
+  
+        // Update the local state by removing the cancelled order from the list
+        setPendingOrders(pendingOrders.filter((order) => order._id !== orderId));
+        
       } catch (err) {
-        console.error(err);
-        setError("Failed to cancel the order.");
+        console.error("Error cancelling order or updating stock:", err);
+        setError("Failed to cancel the order and update product stock.");
       }
     }
   };
+  
 
   const handleUpdateMessage = async (orderId) => {
     const newMessage = prompt("Please enter the new message:");

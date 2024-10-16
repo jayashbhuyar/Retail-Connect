@@ -42,6 +42,8 @@ import AdminProductList from "./components/Admin_List/AdminProductList";
 import AdminDistributorsList from "./components/Admin_List/AdminDistributorsList";
 import AdminComplaints from "./components/Admin_List/AdminComplaints";
 import ComplaintAndReviewPage from "./pages/ComplaintAndreview";
+import NewsFeed from "./pages/Newsfeed";
+import InvoicePage from "./pages/InvoicePage";
 const App = () => {
   return (
     <Router>
@@ -84,6 +86,10 @@ const App = () => {
         <Route path="/admindistributorslist" element={<AdminDistributorsList />} />
         <Route path="/admincomplaints" element={<AdminComplaints />} />
         <Route path="/complaintandreview" element={<ComplaintAndReviewPage />} />
+        <Route path="/newsfeed" element={<NewsFeed/>} />
+        <Route path="/invoicepage" element={<InvoicePage/>} />
+
+
         
       </Routes>
     </Router>

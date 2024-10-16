@@ -156,8 +156,11 @@ const AdminHome = () => {
         </nav>
 
         <div className="flex-1 p-6 overflow-y-auto bg-gradient-to-br from-gray-900 to-gray-00">
-          <h1 className="text-4xl font-bold mb-8 text-center text-orange-500 shadow-text">
-           Admin Dashboard
+          <h1 className="text-4xl font-bold mb-5 text-center text-orange-400 shadow-text">
+            Shri Swami Samartha
+          </h1>
+          <h1 className="text-4xl font-bold mb-5 text-center text-orange-600 shadow-text">
+            Admin Dashboard
           </h1>
           {error && (
             <p className="text-red-500 bg-red-900 p-4 rounded-lg mb-4">

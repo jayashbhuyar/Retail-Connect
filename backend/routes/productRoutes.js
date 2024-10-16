@@ -1,5 +1,15 @@
 const express = require("express");
-const { addProduct, getProductsByDistributorEmail, getAllProducts,getProductById ,getDistributorByProductId,updateStock,updateProduct,deleteProduct} = require("../controllers/productController");
+const {
+  addProduct,
+  getProductsByDistributorEmail,
+  getAllProducts,
+  getProductById,
+  getDistributorByProductId,
+  updateStock,
+  updateProduct,
+  deleteProduct,
+  updateRejectedStock,
+} = require("../controllers/productController");
 const router = express.Router();
 
 // POST endpoint to add a new product
@@ -15,10 +25,12 @@ router.get("/all", getAllProducts);
 router.get("/:productId", getProductById);
 router.get("/:productId/distributor", getDistributorByProductId);
 //update stock
-router.post("/update-stock",updateStock);
+router.post("/update-stock", updateStock);
 
 // *********************************************************
-router.put('/:id',updateProduct);
-router.delete('/:id',deleteProduct);
+router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
+
+router.patch("/update-stock/:productId", updateRejectedStock);
 
 module.exports = router;

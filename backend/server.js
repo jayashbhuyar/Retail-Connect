@@ -10,6 +10,8 @@ const networkRoutes = require("./routes/networkRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const adminRoutes=require("./routes/adminRoutes")
 const feedbackRoutes=require("./routes/feedbackRoutes")
+const newsRoutes = require("./routes/newsRoutes");
+const invoiceRoutes = require("./routes/invoiceRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -38,7 +40,9 @@ app.use("/api/products", productRoutes);
 app.use("/api/network", networkRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/admin", adminRoutes);
-app.use("/api",feedbackRoutes)
+app.use("/api", feedbackRoutes);
+app.use("/api/invoices", invoiceRoutes);
+app.use("/api/news", newsRoutes);
 // app.use('/admin/orders',adminRoutes);
 // Start the server
 app.listen(PORT, "0.0.0.0", () => {

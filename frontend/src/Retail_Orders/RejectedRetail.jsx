@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import RetailerNavbar from "../components/Navbar/RetailerNavbar";
+import { Trash2, Package, DollarSign, User, Mail, AlertTriangle } from 'lucide-react';
+
 const RejectedRetail = () => {
   const [rejectedOrders, setRejectedOrders] = useState([]);
   const [error, setError] = useState(null);
@@ -28,14 +30,13 @@ const RejectedRetail = () => {
     }
   }, [userEmail]);
 
-  const handleCancelOrder = (orderId) => {
-    console.log(`Cancel order with ID: ${orderId}`);
-    // Implement API call to cancel the order
-  };
-
-  const handleUpdateMessage = (orderId) => {
-    console.log(`Update message for order with ID: ${orderId}`);
-    // Implement API call to update the message
+  const handleRemoveOrder = async (orderId) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/orders/delete-rejected/${orderId}`);
+      setRejectedOrders(prevOrders => prevOrders.filter(order => order._id !== orderId));
+    } catch (err) {
+      setError("Failed to remove the order. Please try again.");
+    }
   };
 
   if (loading) {
@@ -44,60 +45,64 @@ const RejectedRetail = () => {
 
   return (
     <>
-    <RetailerNavbar/>
-   
-    <div className="container mx-auto p-6 bg-gray-900 min-h-screen">
-      <h1 className="text-3xl font-bold text-purple-400 mb-6">Rejected Orders</h1>
-      {error && <p className="text-red-400">{error}</p>}
-      {rejectedOrders.length === 0 ? (
-        <p className="text-yellow-300">No rejected orders found.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {rejectedOrders.map((order) => (
-            <div
-              key={order._id}
-              className="border border-gray-700 bg-gray-800 p-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 duration-300"
-            >
-              <img
-                src={order.img}
-                alt={order.productName}
-                className="w-full h-48 object-cover rounded-md mb-4"
-              />
-              <h2 className="text-xl font-semibold text-gray-200">{order.productName}</h2>
-              <p className="text-gray-400">
-                <strong>Distributor Name:</strong> {order.distributorName}
-              </p>
-              <p className="text-gray-400">
-                <strong>Distributor Email:</strong> {order.distributorEmail}
-              </p>
-              <p className="text-gray-400">
-                <strong>Quantity:</strong> {order.quantity}
-              </p>
-              <p className="text-gray-400">
-                <strong>Price:</strong> ${order.price}
-              </p>
-              <p className="text-gray-400">
-                <strong>Status:</strong> {order.status}
-              </p>
-              <div className="mt-4 flex space-x-4">
-                <button
-                  onClick={() => handleCancelOrder(order._id)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition duration-300 ease-in-out"
-                >
-                  Cancel Order
-                </button>
-                <button
-                  onClick={() => handleUpdateMessage(order._id)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition duration-300 ease-in-out"
-                >
-                  Update Message
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+      <RetailerNavbar />
+      <div className="container mx-auto p-6 bg-gray-900 min-h-screen">
+        <h1 className="text-3xl font-bold text-purple-400 mb-6">Rejected Orders</h1>
+        {error && <p className="text-red-400">{error}</p>}
+        {rejectedOrders.length === 0 ? (
+          <p className="text-yellow-300">No rejected orders found.</p>
+        ) : (
+          <ul className="space-y-6">
+            {rejectedOrders.map((order) => (
+              <li key={order._id} className="bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <div className="flex flex-col md:flex-row">
+                  <div className="w-full md:w-1/4">
+                    <img
+                      src={order.img}
+                      alt={order.productName}
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+                  <div className="w-full md:w-3/4 p-4">
+                    <h2 className="text-xl font-semibold text-purple-300 mb-2">{order.productName}</h2>
+                    <ul className="space-y-2 text-gray-300">
+                      <li className="flex items-center">
+                        <User className="w-5 h-5 mr-2 text-blue-400" />
+                        <span className="font-medium">Distributor:</span> {order.distributorName}
+                      </li>
+                      <li className="flex items-center">
+                        <Mail className="w-5 h-5 mr-2 text-green-400" />
+                        <span className="font-medium">Email:</span> {order.distributorEmail}
+                      </li>
+                      <li className="flex items-center">
+                        <Package className="w-5 h-5 mr-2 text-yellow-400" />
+                        <span className="font-medium">Quantity:</span> {order.quantity}
+                      </li>
+                      <li className="flex items-center">
+                        <DollarSign className="w-5 h-5 mr-2 text-pink-400" />
+                        <span className="font-medium">Price:</span> ${order.price}
+                      </li>
+                      <li className="flex items-center">
+                        <AlertTriangle className="w-5 h-5 mr-2 text-red-400" />
+                        <span className="font-medium">Cancel Reason:</span> {order.orderCancelReason || 'Not provided'}
+                      </li>
+                    </ul>
+                    <div className="mt-4">
+                      <button
+                        onClick={() => handleRemoveOrder(order._id)}
+                        className="flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition duration-300 ease-in-out"
+                      >
+                        <Trash2 className="w-5 h-5 mr-2" />
+                        Remove Order
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </>
   );
 };

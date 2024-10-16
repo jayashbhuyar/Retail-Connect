@@ -16,6 +16,9 @@ const {
   getCompletedOrdersByEmail,
   updateOrderMsgRetail,
   updateOrderStatusRetail,
+  updateAcceptedMessage,
+  deleteRejectedOrder,
+  getOrderById
 } = require("../controllers/orderController");
 
 // Route to place a new order
@@ -53,5 +56,13 @@ router.get("/completed-by-email", getCompletedOrdersByEmail);
 
 router.patch("/retail/msg/:orderId", updateOrderMsgRetail); // This should handle both status updates and message updates
 router.patch("/retail/status/:orderId", updateOrderStatusRetail); // This should handle both status updates and message updates
+
+router.put('/update-message/:id',updateAcceptedMessage)//update the message of the accepted page
+//delete the rejected orders
+router.delete('/delete-rejected/:orderId', deleteRejectedOrder);
+// ******************************************************************************************
+// Get specific order by ID
+router.get('/getdata/:id', getOrderById);
+
 
 module.exports = router;

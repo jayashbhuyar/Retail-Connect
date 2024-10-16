@@ -63,6 +63,11 @@ const orderSchema = new mongoose.Schema(
     productName: {
       type: String,
     },
+    productId: {
+      type: mongoose.Schema.Types.ObjectId,
+      // required: true,
+      ref: "Product",
+    },
     status: {
       type: String,
       enum: ["pending", "accepted", "rejected", "completed", "cancelled"],
