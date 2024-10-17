@@ -1,4 +1,3 @@
-// backend/server.js
 const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
@@ -8,8 +7,8 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const networkRoutes = require("./routes/networkRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-const adminRoutes=require("./routes/adminRoutes")
-const feedbackRoutes=require("./routes/feedbackRoutes")
+const adminRoutes = require("./routes/adminRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes");
 const newsRoutes = require("./routes/newsRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 
@@ -17,19 +16,14 @@ const invoiceRoutes = require("./routes/invoiceRoutes");
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(cors()); // Enable CORS
-// app.use(cors({ origin: "*" }));
 app.use(express.json()); // Parse JSON bodies
 
+// Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, {
-    // Use the connection string from .env
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -43,8 +37,6 @@ app.use("/admin", adminRoutes);
 app.use("/api", feedbackRoutes);
 app.use("/api/invoices", invoiceRoutes);
 app.use("/api/news", newsRoutes);
-// app.use('/admin/orders',adminRoutes);
-// Start the server
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+
+// Export the app for serverless deployment (Vercel, etc.)
+module.exports = app;
