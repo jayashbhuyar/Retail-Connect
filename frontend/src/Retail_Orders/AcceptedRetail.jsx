@@ -19,7 +19,9 @@ const AcceptedRetail = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/orders/accepted-by-email?userEmail=${userEmail}`
+          `http://localhost:8000/api/orders/accepted-by-email?userEmail=${userEmail}`,{
+            withCredentials:true
+          }
         );
         setAcceptedOrders(response.data);
       } catch (err) {
@@ -43,7 +45,9 @@ const AcceptedRetail = () => {
     try {
       const response = await axios.put(
         `http://localhost:8000/api/orders/update-message/${orderId}`,
-        { newMessage }
+        { newMessage },{
+          withCredentials:true
+        }
       );
       console.log(response.data);
       setAcceptedOrders((prevOrders) =>

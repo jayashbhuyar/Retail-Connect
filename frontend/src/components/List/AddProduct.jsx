@@ -54,6 +54,8 @@ const AddProduct = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(productData),
+        credentials: "include", // Include credentials with the request
+       
       });
 
       const data = await response.json();

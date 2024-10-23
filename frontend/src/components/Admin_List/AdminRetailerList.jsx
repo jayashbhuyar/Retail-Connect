@@ -11,7 +11,10 @@ const AdminRetailerList = () => {
     const fetchRetailers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8000/api/users/retailers"
+          "http://localhost:8000/api/users/retailers", {
+            method: "GET", // Specify the request method if needed (GET is default)
+            credentials: "include", // Include credentials with the request
+          }
         );
         const data = await response.json();
         if (response.ok) {
@@ -40,7 +43,9 @@ const AdminRetailerList = () => {
       try {
         const response = await fetch(
           `http://localhost:8000/api/users/retailers/${retailerId}`,
-          { method: "DELETE" }
+          { method: "DELETE" ,
+            credentials:"include"
+          }
         );
         if (response.ok) {
           // Remove the retailer from the state after successful deletion

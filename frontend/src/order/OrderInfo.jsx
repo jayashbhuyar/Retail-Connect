@@ -16,7 +16,10 @@ const OrderInfo = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       const response = await fetch(
-        `http://localhost:8000/api/products/${productId}`
+        `http://localhost:8000/api/products/${productId}`, {
+          method: "GET", // Specify the request method if needed (GET is default)
+          credentials: "include", // Include credentials with the request
+        }
       );
       const data = await response.json();
       setProduct(data);
@@ -25,7 +28,10 @@ const OrderInfo = () => {
     const fetchDistributorInfo = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/products/${productId}/distributor`
+          `http://localhost:8000/api/products/${productId}/distributor`, {
+            method: "GET", // Specify the request method if needed (GET is default)
+            credentials: "include", // Include credentials with the request
+          }
         );
        
         if (!response.ok) {
@@ -103,7 +109,9 @@ const OrderInfo = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: "include", // Include credentials with the request
         body: JSON.stringify(orderData),
+        
       });
 
       if (response.ok) {
@@ -134,6 +142,7 @@ const OrderInfo = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials:"include",
         body: JSON.stringify({
           distributorEmail1,
           productId,

@@ -13,7 +13,10 @@ const DistributorsList = () => {
       setLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:8000/api/users/distributors"
+          "http://localhost:8000/api/users/distributors", {
+            method: "GET", // Specify the request method if needed (GET is default)
+            credentials: "include", // Include credentials with the request
+          }
         );
         const data = await response.json();
         if (response.ok) {
@@ -42,6 +45,8 @@ const DistributorsList = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ distributorEmail: distributor.email, userEmail }),
+        credentials: "include", // Include credentials with the request
+        
       });
   
       const data = await response.json();

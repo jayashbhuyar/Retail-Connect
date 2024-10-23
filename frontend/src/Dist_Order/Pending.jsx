@@ -415,7 +415,10 @@ const Pending = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/orders/pending?distributorEmail=${distributorEmail}`
+          `http://localhost:8000/api/orders/pending?distributorEmail=${distributorEmail}`,{
+             withCredentials: true,
+          }
+          
         );
 
         if (response.data && response.data.length > 0) {
@@ -456,22 +459,36 @@ const Pending = () => {
 
     try {
       // Step 1: Update order status to 'accepted'
-      await axios.patch(
+       await axios.patch(
         `http://localhost:8000/api/orders/status/${currentOrder._id}`,
         {
           status: "accepted",
           deliveryBefore: deliveryDate.toISOString(),
+        },
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
         }
       );
 
       // Step 2: Fetch the product details from the Product model
       const productResponse = await axios.get(
-        `http://localhost:8000/api/products/${currentOrder.productId}`
+        `http://localhost:8000/api/products/${currentOrder.productId}`,
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
+        }
       );
       const productData = productResponse.data;
-
+      
+      const orderResponse = await axios.get(
+        `http://localhost:8000/api/orders/getdata/${currentOrder._id}`,
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
+        }
+      );
       const orderresponse = await axios.get(
-        `http://localhost:8000/api/orders/getdata/${currentOrder._id}`
+        `http://localhost:8000/api/orders/getdata/${currentOrder._id}`,{
+          withCredentials: true,
+        }
       );
 
       const orderData = orderresponse.data;
@@ -509,7 +526,15 @@ const Pending = () => {
       };
       
       // Send the invoice data to the API
-      await axios.post("http://localhost:8000/api/invoices", invoiceData);
+      // await axios.post("http://localhost:8000/api/invoices", invoiceData);
+      await axios.post(
+        "http://localhost:8000/api/invoices",
+        invoiceData,
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
+        }
+      );
+      
 
       // Step 6: Remove the accepted order from the list
       setOrders((prevOrders) =>
@@ -546,8 +571,12 @@ const Pending = () => {
         {
           status: "rejected",
           orderCancelReason: rejectionReason,
+        },
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
         }
       );
+      
 
       // Extract productId and quantity from the currentOrder
       const { productId, quantity } = currentOrder;
@@ -557,8 +586,13 @@ const Pending = () => {
         `http://localhost:8000/api/products/update-stock/${productId}`,
         {
           increment: quantity, // Send quantity to be added back to stock
+        },
+        {
+          withCredentials: true, // Include credentials (cookies) with the request
         }
       );
+      
+      
 
       // Update the orders list by removing the rejected order
       setOrders((prevOrders) =>

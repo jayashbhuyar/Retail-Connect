@@ -11,7 +11,10 @@ const Requests = () => {
       console.log("Fetching requests for email:", userEmail); // Log the email being used
       try {
         const response = await fetch(
-          `http://localhost:8000/api/network/pending?email=${userEmail}` // Fetch pending requests
+          `http://localhost:8000/api/network/pending?email=${userEmail}`, {
+            method: "GET", // Specify the request method if needed (GET is default)
+            credentials: "include", // Include credentials with the request
+          } // Fetch pending requests
         );
         const data = await response.json();
         if (response.ok) {
@@ -36,7 +39,9 @@ const Requests = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "accepted" }), // Update status to accepted
+          body: JSON.stringify({ status: "accepted" }), 
+          credentials: "include", // Include credentials with the request
+         
         }
       );
 
@@ -61,7 +66,9 @@ const Requests = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ status: "rejected" }), // Update status to rejected
+          body: JSON.stringify({ status: "rejected" }), 
+          credentials: "include", // Include credentials with the request
+         // Update status to rejected
         }
       );
 

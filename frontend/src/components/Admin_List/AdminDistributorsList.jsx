@@ -11,7 +11,10 @@ const AdminDistributorsList = () => {
     const fetchDistributors = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:8000/api/users/distributors");
+        const response = await fetch("http://localhost:8000/api/users/distributors", {
+          method: "GET", // Specify the request method if needed (GET is default)
+          credentials: "include", // Include credentials with the request
+        });
         const data = await response.json();
         if (response.ok) {
           setDistributors(data);
@@ -36,6 +39,7 @@ const AdminDistributorsList = () => {
     try {
       const response = await fetch(`http://localhost:8000/api/network/add`, {
         method: "POST",
+        credentials:"include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -59,6 +63,7 @@ const AdminDistributorsList = () => {
       try {
         const response = await fetch(`http://localhost:8000/api/users/distributors/${distributorId}`, {
           method: "DELETE",
+          credentials:"include"
         });
         if (response.ok) {
           setDistributors(distributors.filter((distributor) => distributor._id !== distributorId));
